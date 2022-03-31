@@ -36,9 +36,9 @@ class _MyHomePageState extends State<MyHomePage> {
   _invokeMethodChannel() async {
     try {
       dynamic invoked = await methodChannel.invokeMethod("requestPermissions");
-      print(invoked);
+      debugPrint(invoked);
     } on PlatformException catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
   }
 
@@ -48,18 +48,18 @@ class _MyHomePageState extends State<MyHomePage> {
         "startLocationService",
         {"postUrl": "http://127.0.0.1:8000/api/save-location/12"},
       );
-      print(invoked);
+      debugPrint(invoked);
     } on PlatformException catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
   }
 
   _stopLocationService() async {
     try {
       dynamic invoked = await methodChannel.invokeMethod("stopLocationService");
-      print(invoked);
+      debugPrint(invoked);
     } on PlatformException catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
   }
 
