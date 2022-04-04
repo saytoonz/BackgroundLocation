@@ -5,9 +5,13 @@ import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.Location
+import android.util.Log
 import androidx.annotation.NonNull
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.sayt.background_location.helpers.LocationHelper
+import com.sayt.background_location.helpers.MyLocationListener
 import com.sayt.background_location.services.LocationService
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
@@ -19,6 +23,7 @@ class MainActivity : FlutterActivity() {
     private val METHOD_CHANNEL_NAME = "com.sayt.background_location/method"
     private val START_LOCATION_CHANNEL_NAME = "com.sayt.background_location/startLocation"
     private val STOP_LOCATION_CHANNEL_NAME = "com.sayt.background_location/stopLocation"
+    private val locationHelper: LocationHelper = LocationHelper()
 
     private var methodChannel: MethodChannel? = null
 
@@ -60,14 +65,24 @@ class MainActivity : FlutterActivity() {
         if (!this.isMyServiceRunning(LocationService::class.java)) {
             val intent = Intent(this, LocationService::class.java)
             intent.putExtra("postUrl", postUrl)
-//            startForegroundService(Intent(this, LocationService::class.java))
             ContextCompat.startForegroundService(this, intent)
+            locationHelper.startListeningUserLocation( this , object:MyLocationListener {
+                override fun onLocationChanged(location: Location?) {
+                      location?.let {
+//                          Log.d("TAG", "startLocationService: location $location")
+//                          Log.d("TAG", "startLocationService: Latitude ${location.latitude} , Longitude ${location.longitude}")
+//                          Log.d("TAG", "startLocationService: Bearing ${location.bearing} , Speed ${location.speed}")
+//                          Log.d("TAG", "On interface")
+                      }
+                 }
+            })
         }
     }
 
     private fun stopLocationService() {
 
         try {
+            locationHelper.stopListeningUserLocation()
             stopService(Intent(this, LocationService::class.java))
         } catch (e: Exception) {
             print(e.stackTrace);

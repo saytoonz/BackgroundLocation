@@ -18,7 +18,7 @@ interface ApiClient {
     companion object {
 
         var retrofit: Retrofit? = null
-        val logging = HttpLoggingInterceptor().apply {
+        private val logging = HttpLoggingInterceptor().apply {
             this.level = HttpLoggingInterceptor.Level.BODY
         }
         fun getInstance(context: Context, postUrl: String) : Retrofit {

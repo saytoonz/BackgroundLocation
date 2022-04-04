@@ -46,7 +46,9 @@ class _MyHomePageState extends State<MyHomePage> {
     try {
       dynamic invoked = await methodChannel.invokeMethod(
         "startLocationService",
-        {"postUrl": "http://127.0.0.1:8000/api/save-location/12"},
+        {
+          "postUrl": "https://www.flutter-doctor.com/api/save-location/12",
+        },
       );
       debugPrint(invoked);
     } on PlatformException catch (e) {
